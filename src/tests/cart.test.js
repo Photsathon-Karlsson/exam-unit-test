@@ -104,7 +104,21 @@ describe('Cart', () => {
 		expect(totalValueAfterEdit).toBe(totalValueBeforeEdit + input2.price) // Check if the new total price = old price + 1 mango's price (= it added 1 more mango).
 	})
 
-
+	// Function to clear the cart (remove all items).
+	test("clear", () => {
+		const input1 = { id: 1002, name: "banana", price: 10 }
+		const input2 = { id: 1010, name: "mango", price: 40 }
+		const input3 = { id: 1025, name: "avocado", price: 80 }
+		const input = [input1, input2, input3] // Put all 3 items into a list (array).
+		// Loop for add each item in the list to the shopping cart by function 'addToCart'.
+		for (let i = 0; i < input.length; i++) {
+		addToCart(input[i])
+	}
+	// // Call the function 'clearCart' to clear the cart.
+	clearCart()
+		const countAfterClear = getCartItemCount() // Check if items in the cart after clearing.
+		expect(countAfterClear).toBe(0) // Expect that the cart is empty(0) after clearing.
+	})
 
 })
  
