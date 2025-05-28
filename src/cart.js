@@ -68,19 +68,21 @@ function removeFromCart(itemId) { // Create function & takes itemId as input.
     return true // if item successfully removed.
   }
 }
-/*
-function editCart(itemId, newValues) {
-  const selectedItem = cart.filter((cartItem) => cartItem.id === itemId)
-  selectedItem.forEach((cartItem) => {
-    cartItem.amount = newValues
+
+// Function to update item quantity in the cart.
+function editCart(itemId, newValues) { // Taking 2 inputs: item's ID & the new item that want to edit.	
+	const selectedItem = cart.filter((cartItem) => cartItem.id === itemId) // Checks the cart for matching items & stores them in an array (selectedItem).
+  	selectedItem.forEach((cartItem) => { // Loop goes through every item in selectedItem.
+	cartItem.amount = newValues // Updates the item’s quantity.
   })
 }
 
+/*
 function clearCart() {
   cart = []
   idCounter = 2002 // Reset the idCounter
 }
-
+*/
 export {
   getCartItemCount,
   addToCart,
@@ -90,4 +92,3 @@ export {
   editCart,
   clearCart,
 }
-*/
