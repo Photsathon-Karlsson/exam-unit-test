@@ -62,10 +62,19 @@ describe('Validation', () => {
 		});
 	});
 
-	//Throw error cases
-	
+	// Throw error cases
+	// Cases where the function does not work correctly.
+	describe("Throw error cases", () => {
+		it("isProduct() should throw an error for an invalid product", () => {
+		expect(() => isProduct()).toThrow(); // Check that isProduct() throws an error.
+		});
 
-})
+		it("isCartItem() should throw an error for an invalid cart item", () => {
+		expect(() => isCartItem()).toThrow(); // Check that isCartItem() throws an error.
+    	});
+	});
+
+});
 
 // Använd en "test" eller "it" (de är synonymer) för varje testfall
 	/* Exempel på syntax:

@@ -6,8 +6,8 @@ Din uppgift:
 Tips:
 - börja med att identifiera VAD som ska testas.
 - om du testar t.ex. removeFromCart får du använda addToCart i början av testet. Den kommer nämligen ha sina egna tester
-
 */
+
 // function getCartItemCount()
 // function getItem(index)
 // function getTotalCartValue()
@@ -22,14 +22,14 @@ import { isCartItem, isProduct } from "./validation.js"
 let cart = []
 let idCounter = 2002
 // -------------------------------------------------- //
-
-
 // Din kod börjar här
 // Du får en funktion att börja med
 
 function getCartItemCount() {
-	throw new Error('TODO')
+	// throw new Error('TODO')
+	return cart.length;
 }
+
 
 function addToCart(newItem) {
 	if( !isProduct(newItem) ) {
@@ -41,6 +41,12 @@ function addToCart(newItem) {
 	cart.push(cartItem)
 }
 
-
-
-export { getCartItemCount, addToCart }
+export {
+  getCartItemCount,
+  addToCart,
+  getItem,
+  getTotalCartValue,
+  removeFromCart,
+  editCart,
+  clearCart,
+}
