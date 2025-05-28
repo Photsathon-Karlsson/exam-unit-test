@@ -77,12 +77,12 @@ function editCart(itemId, newValues) { // Taking 2 inputs: item's ID & the new i
   })
 }
 
-/*
+// Function to clear all items in the cart.
 function clearCart() {
   cart = []
-  idCounter = 2002 // Reset the idCounter
+  idCounter = 2002 // Reset the idCounter to 2002.
 }
-*/
+
 export {
   getCartItemCount,
   addToCart,
