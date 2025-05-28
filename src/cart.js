@@ -25,20 +25,60 @@ let idCounter = 2002
 // Din kod börjar här
 // Du får en funktion att börja med
 
+// Function to return the number of items in the cart.
 function getCartItemCount() {
-	// throw new Error('TODO')
-	return cart.length;
+	// throw new Error('TODO') 
+	return cart.length
 }
 
+// Function to return the cart item (at the position index).
+function getItem(index) {
+  return cart[index]
+}
 
+// Function to calculate the total price of all items in the cart.
+function getTotalCartValue() {
+  let total = 0 // Total price start at 0.
+  // Loop for all items in the cart (from 0 to cart length). 
+  for (let i = 0; i < cart.length; i++) {
+    total += cart[i].item.price * cart[i].amount // Multiply item price by quantity, then add it to total.
+  }
+  return total
+}
+
+// Function for checking if the product is valid.
 function addToCart(newItem) {
-	if( !isProduct(newItem) ) {
-		return false
-	}
+  if (!isProduct(newItem)) {
+    return false
+  }
 
-	const cartItem = { id: idCounter, amount: 1, item: newItem }
-	idCounter++
-	cart.push(cartItem)
+  const cartItem = { id: idCounter, amount: 1, item: newItem }
+  idCounter++
+  cart.push(cartItem)
+}
+
+// Function to remove item from the cart. 
+function removeFromCart(itemId) { // Create function & takes itemId as input.
+  const deleteItems = cart.filter((cartItem) => cartItem.id === itemId) // Find items in cart that match the itemId.
+  // Check if no item found :
+  if (deleteItems.length === 0) {
+    return false // if item not in the cart.
+  } else {
+    cart = cart.filter((item) => item.id !== itemId) // Remove the item from the cart.
+    return true // if item successfully removed.
+  }
+}
+/*
+function editCart(itemId, newValues) {
+  const selectedItem = cart.filter((cartItem) => cartItem.id === itemId)
+  selectedItem.forEach((cartItem) => {
+    cartItem.amount = newValues
+  })
+}
+
+function clearCart() {
+  cart = []
+  idCounter = 2002 // Reset the idCounter
 }
 
 export {
@@ -50,3 +90,4 @@ export {
   editCart,
   clearCart,
 }
+*/
