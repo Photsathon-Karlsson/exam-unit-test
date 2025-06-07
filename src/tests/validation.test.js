@@ -1,5 +1,6 @@
 import { isCartItem, isProduct } from "../validation.js"
-// Examples of a valid product and a valid cart item. You may use these when testing below.
+
+// Valid examples for testing
 const exampleProduct = {
 	id: 1001,
 	name: 'Badanka',
@@ -12,84 +13,59 @@ const exampleCartObject = {
 	item: exampleProduct
 }
 
-// For invalid cases.
+// Invalid examples for testing
 const exampleInvalidProduct = {
-  id: 1001,
-  price: 500,
-};
+	id: 1001, // Missing 'name'
+	price: 500
+}
 
 const exampleInvalidCartObject = {
-  amount: 1,
-  item: exampleProduct,
-};
+	amount: 1, // Missing 'id'
+	item: exampleProduct
+}
 
-// Group tests using "describe"
-describe('Validation', () => {
+// Group all validation-related tests
+describe('Validation functions for product and cart item objects', () => {
 
-	// True cases
-	// Cases where the functions work correctly & return the expected result.
-	describe("True cases", () => {
-		// isProduct()
-		it("isProduct() should return true for a valid product", () => {
-		const result = isProduct(exampleProduct); // The result should be true.
-		// console.log("result of isProduct() is ", result);
-		expect(result).toBe(true); // Check that result is true.
-		});
+	// Test cases where validation should return true
+	describe("Returns true for valid input", () => {
 
-		// isCartItem()
-		it("isCartItem() should return true for a valid cart item", () => {
-		const result = isCartItem(exampleCartObject); 
-		// console.log("result of isCartItem() is ", result);
-		expect(result).toBe(true); 
-		});
-  	});
+		it("isProduct() should return true when the input is a valid product object", () => {
+			const result = isProduct(exampleProduct) // Valid product structure
+			expect(result).toBe(true)
+		})
 
-	// False cases
-	// Cases where the function works correctly & returns the expected false result.
-	describe("False cases", () => {
-		it("isProduct() should return false for an invalid product", () => {
-		const result = isProduct(exampleInvalidProduct); 
-		console.log("result of invalid isProduct() is ", result);
-
-		expect(result).toBe(false); 
-		});
-
-		it("isCartItem() should return false for an invalid cart item", () => {
-		const result = isCartItem(exampleInvalidCartObject); 
-		console.log("result of invalid isCartItem() is ", result);
-
-		expect(result).toBe(false); 
-		});
-	});
-
-	// Throw error cases
-	// Cases where the function does not work correctly.
-	describe("Throw error cases", () => {
-		it("isProduct() should throw an error for an invalid product", () => {
-		expect(() => isProduct()).toThrow(); // Check that isProduct() throws an error.
-		});
-
-		it("isCartItem() should throw an error for an invalid cart item", () => {
-		expect(() => isCartItem()).toThrow(); // Check that isCartItem() throws an error.
-    	});
-	});
-
-});
-
-// Använd en "test" eller "it" (de är synonymer) för varje testfall
-	/* Exempel på syntax:
-	test('beskriv testfallet', () => {
-		// här skriver du testkoden
-		// avsluta alltid med "expect"
+		it("isCartItem() should return true when the input is a valid cart item object", () => {
+			const result = isCartItem(exampleCartObject) // Valid cart item structure
+			expect(result).toBe(true)
+		})
 	})
-	*/
 
-	// ---------------------------------------------
-	// Följande testfall ska du implementera. Det är tillåtet att använda Joi. Gör i så fall ett schema för varje sorts objekt du vill kunna validera. Du får även ändra texten och du t.ex. vill skriva på svenska i stället för engelska.
-	// (Ta bort dessa kommentarer när du är klar)
+	// Test cases where validation should return false
+	describe("Returns false for invalid input", () => {
 
-	// 1. it returns true for a valid cart object
-	// 2. it returns false for invalid cart objects
+		it("isProduct() should return false when required product fields are missing", () => {
+			const result = isProduct(exampleInvalidProduct) // Missing 'name'
+			console.log("Result of invalid isProduct():", result)
+			expect(result).toBe(false)
+		})
 
-	// 3. it returns true for a valid product
-	// 4. it returns false for invalid cart objects
+		it("isCartItem() should return false when required cart item fields are missing", () => {
+			const result = isCartItem(exampleInvalidCartObject) // Missing 'id'
+			console.log("Result of invalid isCartItem():", result)
+			expect(result).toBe(false)
+		})
+	})
+
+	// Test cases where the function should throw an error due to missing input
+	describe("Throws an error for missing or undefined input", () => {
+
+		it("isProduct() should throw an error when no input is provided", () => {
+			expect(() => isProduct()).toThrow() // No argument passed
+		})
+
+		it("isCartItem() should throw an error when no input is provided", () => {
+			expect(() => isCartItem()).toThrow() // No argument passed
+		})
+	})
+})

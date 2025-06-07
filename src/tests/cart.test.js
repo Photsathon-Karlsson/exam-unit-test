@@ -1,4 +1,3 @@
-// Import functions to be tested
 import {
   addToCart,
   getCartItemCount,
@@ -6,103 +5,112 @@ import {
   getTotalCartValue,
   removeFromCart,
   editCart,
-  clearCart,
+  clearCart
 } from "../cart"
 
-describe('Shopping Cart Functionality Tests', () => {
-	beforeEach(() => {
-		clearCart()
-	})
+// Group all tests together
+describe("Cart Functionality", () => {
 
-	// Test: Adding a new product increases the cart count
-	test('addToCart should add a new product to the cart', () => {
-		const itemCountBefore = getCartItemCount()
-		const input = { id: 1002, name: 'Water Gun', price: 40 }
+  // Clear cart before each test to make sure test is isolated
+  beforeEach(() => {
+    clearCart()
+  })
 
-		addToCart(input)
-		const itemCountAfter = getCartItemCount()
+  // Test addToCart with a valid product
+  test("addToCart should add an item", () => {
+    const product = { id: 1, name: "Ball", price: 50 }
+    addToCart(product)
+    expect(getCartItemCount()).toBe(1)
+  })
 
-		expect(itemCountAfter).toBe(itemCountBefore + 1)
-	})
+  // Test getCartItemCount
+  test("getCartItemCount should return correct count", () => {
+    expect(getCartItemCount()).toBe(0)
+    addToCart({ id: 1, name: "Ball", price: 50 })
+    addToCart({ id: 2, name: "Bat", price: 100 })
+    expect(getCartItemCount()).toBe(2)
+  })
 
-	// Test: Item count increases after adding product
-	test('getCartItemCount should reflect the correct number of items in the cart', () => {
-		expect(getCartItemCount()).toBe(0)
+  // Test getItem returns correct item
+  test("getItem should return correct item by index", () => {
+    const product = { id: 1, name: "Ball", price: 50 }
+    addToCart(product)
+    const item = getItem(0)
+    expect(item.item).toEqual(product)
+    expect(item.amount).toBe(1)
+  })
 
-		const input = { id: 1002, name: "Water Gun", price: 40 }
-		addToCart(input)
-		expect(getCartItemCount()).toBe(1)
-	})
+  // Test total value is correct
+  test("getTotalCartValue should return total price", () => {
+    addToCart({ id: 1, name: "Ball", price: 10 })
+    addToCart({ id: 2, name: "Bat", price: 90 })
+    expect(getTotalCartValue()).toBe(100)
+  })
 
-	// Test: getItem returns the correct product from the cart
-	test('getItem should return the correct product object from the cart by index', () => {
-		const input1 = { id: 1002, name: "Banana", price: 10 }
-		const input2 = { id: 1010, name: "Mango", price: 40 }
-		addToCart(input1)
-		addToCart(input2)
-		const expectedItem = { id: 2002, amount: 1, item: input1 }
+  // Test removeFromCart removes item
+  test("removeFromCart should remove item", () => {
+    const product = { id: 1, name: "Ball", price: 10 }
+    addToCart(product)
+    const item = getItem(0)
+    removeFromCart(item.id)
+    expect(getCartItemCount()).toBe(0)
+  })
 
-		const item1 = getItem(0)
+  // Test editCart updates quantity
+  test("editCart should update quantity", () => {
+    const product = { id: 1, name: "Ball", price: 20 }
+    addToCart(product)
+    const item = getItem(0)
+    editCart(item.id, 3)
+    const updatedItem = getItem(0)
+    expect(updatedItem.amount).toBe(3)
+    expect(getTotalCartValue()).toBe(60)
+  })
 
-		expect(item1).toEqual(expectedItem)
-	})
+  // Test clearCart clears all items
+  test("clearCart should empty the cart", () => {
+    addToCart({ id: 1, name: "Ball", price: 10 })
+    addToCart({ id: 2, name: "Bat", price: 20 })
+    clearCart()
+    expect(getCartItemCount()).toBe(0)
+  })
 
-	// Test: Total value of cart matches sum of item prices
-	test('getTotalCartValue should return the correct total of all items in the cart', () => {
-		const input = [
-			{ id: 1002, name: "Banana", price: 10 },
-			{ id: 1010, name: "Mango", price: 40 },
-			{ id: 1025, name: "Avocado", price: 80 }
-		]
-		let expectedTotal = 0
-		input.forEach(item => {
-			addToCart(item)
-			expectedTotal += item.price
-		})
+  // Test: editCart with invalid quantity (zero)
+  test("editCart should ignore 0 quantity", () => {
+    const product = { id: 3, name: "Helmet", price: 30 }
+    addToCart(product)
+    const item = getItem(0)
+    editCart(item.id, 0)
+    expect(item.amount).toBe(1) // should stay the same
+  })
 
-		expect(getTotalCartValue()).toBe(expectedTotal)
-	})
+  // Test: editCart with invalid quantity (negative)
+  test("editCart should ignore negative quantity", () => {
+    const product = { id: 4, name: "Gloves", price: 15 }
+    addToCart(product)
+    const item = getItem(0)
+    editCart(item.id, -2)
+    expect(item.amount).toBe(1)
+  })
 
-	// Test: Removing a product decreases item count
-	test('removeFromCart should remove a product by cart item id', () => {
-		const input1 = { id: 1002, name: "Banana", price: 10 }
-		const input2 = { id: 1010, name: "Mango", price: 40 }
-		addToCart(input1)
-		addToCart(input2)
+  // Test: editCart with invalid quantity (non-number)
+  test("editCart should ignore non-number quantity", () => {
+    const product = { id: 5, name: "Shoes", price: 60 }
+    addToCart(product)
+    const item = getItem(0)
+    editCart(item.id, "two")
+    expect(item.amount).toBe(1)
+  })
 
-		const countBefore = getCartItemCount()
-		const cartItemIdToRemove = 2002
-		removeFromCart(cartItemIdToRemove)
-		const countAfter = getCartItemCount()
+  // Test: getItem returns undefined for invalid index
+  test("getItem should return undefined for out-of-range index", () => {
+    expect(getItem(99)).toBeUndefined()
+  })
 
-		expect(countAfter).toBe(countBefore - 1)
-	})
-
-	// Test: Editing an item quantity updates the total value
-	test('editCart should update the quantity of a product in the cart', () => {
-		const input1 = { id: 1002, name: "Banana", price: 10 }
-		const input2 = { id: 1010, name: "Mango", price: 40 }
-		addToCart(input1)
-		addToCart(input2)
-
-		const totalBefore = getTotalCartValue()
-		const cartItemIdToEdit = 2003 // id for the second added item
-		editCart(cartItemIdToEdit, 2) // change quantity to 2
-		const totalAfter = getTotalCartValue()
-
-		expect(totalAfter).toBe(totalBefore + input2.price)
-	})
-
-	// Test: Clearing the cart resets item count to 0
-	test('clearCart should remove all items from the cart', () => {
-		const input = [
-			{ id: 1002, name: "Banana", price: 10 },
-			{ id: 1010, name: "Mango", price: 40 },
-			{ id: 1025, name: "Avocado", price: 80 }
-		]
-		input.forEach(item => addToCart(item))
-
-		clearCart()
-		expect(getCartItemCount()).toBe(0)
-	})
+  // Test: removeFromCart with invalid ID should not crash
+  test("removeFromCart should do nothing for non-existent ID", () => {
+    addToCart({ id: 6, name: "Net", price: 40 })
+    expect(() => removeFromCart(9999)).not.toThrow()
+    expect(getCartItemCount()).toBe(1)
+  })
 })

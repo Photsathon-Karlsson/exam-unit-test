@@ -34,6 +34,9 @@ const config = {
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
+  // ✅ Added to make Jest recognize tests inside src/tests/
+  testMatch: ["**/src/tests/**/*.test.js"],
+
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",
@@ -195,5 +198,4 @@ const config = {
   // watchman: true,
 };
 
-// module.exports = config;
-export default config
+export default config;
